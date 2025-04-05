@@ -24,7 +24,7 @@ header p {
 }
 
 .container {
-  max-width: 700px;
+  max-width: 1200px; 
   margin: 2rem auto;
   padding: 2rem;
   background-color: white;
@@ -70,6 +70,11 @@ button:hover {
   border: 1px solid #cce4d6;
 }
 
+.weather {
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .recommendation {
   background-color: #e3fcef;
   color: #1a4b2a;
@@ -84,20 +89,32 @@ button:hover {
 
 .forecast-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  width: 100%;
 }
 
 .forecast-card {
   background: #ffffff;
   border: 1px solid #d0e0d0;
-  border-radius: 8px;
-  padding: 0.5rem;
+  border-radius: 10px;
+  padding: 1rem;
   text-align: center;
+  font-size: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  min-width: 140px;
+}
+
+.forecast-card .soil {
+  margin-top: 0.75rem;
   font-size: 0.9rem;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+  font-weight: 500;
+  color: #1a4b2a;
+  background: #eafcee;
+  border-radius: 6px;
+  padding: 0.4rem;
+  display: block;
 }
 
 .soil-moisture h3 {
@@ -125,4 +142,30 @@ button:hover {
 
 #soilData br {
   line-height: 1.6;
+}
+
+.soil span span {
+  cursor: help;
+  color: #2c6e49;
+  font-weight: bold;
+  margin-left: 4px;
+}
+
+.moisture-range {
+  font-size: 0.85rem;
+  color: #444;
+}
+
+.moisture-status {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #2c6e49;
+}
+
+.moisture-status:contains("Too Dry") {
+  color: #d9534f;
+}
+
+.moisture-status:contains("Too Wet") {
+  color: #f0ad4e;
 }
