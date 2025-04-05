@@ -16,22 +16,28 @@ async function getWeather() {
 }
 
 function displayForecast(data) {
-  const weatherDiv = document.querySelector(".weather p");
-  let output = "";
+  const forecastGrid = document.getElementById("forecastGrid");
+  forecastGrid.innerHTML = "";
 
   if (!data.list) {
-    weatherDiv.innerHTML = "⚠️ Unable to retrieve forecast. Check zip code.";
+    forecastGrid.innerHTML = "<p>⚠️ Unable to retrieve forecast. Check zip code.</p>";
     return;
   }
 
-  // Get forecast every 24 hours (8 intervals of 3 hours each)
   for (let i = 0; i < data.list.length; i += 8) {
-    const date = new Date(data.list[i].dt * 1000).toLocaleDateString();
-    const temp = data.list[i].main.temp;
+    const date = new Date(data.list[i].dt * 1000);
+    const dayName = date.toLocaleDateString("en-US", { weekday: "short" });
+    const formattedDate = date.toLocaleDateString();
+    const temp = Math.round(data.list[i].main.temp * 10) / 10;
     const rain = data.list[i].rain?.["3h"] || 0;
 
-    output += `${date}: 🌡️ ${temp}°C | 🌧️ ${rain} mm<br>`;
+    const card = document.createElement("div");
+    card.className = "forecast-card";
+    card.innerHTML = `
+      <strong>${dayName}</strong><br>${formattedDate}<br>
+      🌡️ ${temp}°C<br>
+      🌧️ ${rain} mm
+    `;
+    forecastGrid.appendChild(card);
   }
-
-  weatherDiv.innerHTML = output;
 }

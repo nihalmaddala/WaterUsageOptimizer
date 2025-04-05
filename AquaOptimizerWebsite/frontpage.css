@@ -1,67 +1,101 @@
 body {
-    font-family: Arial, sans-serif;
-    background: #f3f8f2;
-    margin: 0;
-    padding: 0;
-  }
-  
-  header {
-    background-color: #2c6e49;
-    color: white;
-    padding: 1rem;
-    text-align: center;
-  }
-  
-  .container {
-    max-width: 800px;
-    margin: 2rem auto;
-    padding: 1rem;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  }
-  
-  label {
-    display: block;
-    margin-top: 1rem;
-    font-weight: bold;
-  }
-  
-  select, input[type="text"], button {
-    width: 100%;
-    padding: 0.5rem;
-    margin-top: 0.5rem;
-    margin-bottom: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1rem;
-  }
-  
-  button {
-    background-color: #2c6e49;
-    color: white;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #245d3c;
-  }
-  
-  .weather, .recommendation, .calendar {
-    margin-top: 2rem;
-    padding: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background: #f9f9f9;
-  }
-  
-  .recommendation {
-    background-color: #e3fcef;
-    color: #1a4b2a;
-    font-size: 1.2rem;
-  }
-  
-  .calendar input {
-    margin-right: 0.5rem;
-  }
-  
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f3f8f2;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #2c6e49;
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2.5rem;
+}
+
+header p {
+  font-size: 1.1rem;
+  margin-top: 0.5rem;
+}
+
+.container {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+}
+
+label {
+  display: block;
+  margin-top: 1.2rem;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+select, input[type="text"], button {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #2c6e49;
+  color: white;
+  font-weight: bold;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #1f4e36;
+}
+
+.weather, .recommendation, .calendar {
+  margin-top: 2rem;
+  padding: 1.25rem;
+  border-radius: 10px;
+  background: #f8fdf8;
+  border: 1px solid #cce4d6;
+}
+
+.recommendation {
+  background-color: #e3fcef;
+  color: #1a4b2a;
+  font-size: 1.1rem;
+}
+
+.calendar label {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.forecast-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.forecast-card {
+  background: #ffffff;
+  border: 1px solid #d0e0d0;
+  border-radius: 8px;
+  padding: 0.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+}
