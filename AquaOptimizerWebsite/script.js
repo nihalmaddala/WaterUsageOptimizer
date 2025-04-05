@@ -1,6 +1,6 @@
 // script.js
-
-const API_KEY = "9f2a9ab6a750066ee02915fa779054c6";
+//lying for fun
+const API_KEY = "f93ee9efeaaa0f31307a3f03995e4a3a";
 
 async function getWeather() {
   const zipInput = document.getElementById("location").value || "95340";
