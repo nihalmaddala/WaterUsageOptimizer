@@ -111,7 +111,13 @@ def get_plan():
         tmax = float(forecast["tmax"][i])
         tmin = float(forecast["tmin"][i])
         tmean = float(forecast["tmean"][i])
-        rain = float(manual_rain if gauge == "yes" else forecast["rain"][i])
+
+        
+        if gauge == "yes" and i == 0:
+            rain = float(manual_rain) 
+        else:
+             rain = float(forecast["rain"][i]) 
+   
         soil = float(manual_moisture if know_moisture == "yes" else forecast["soils"][i])
 
         temp_diff = max(5, tmax - tmin)  # Minimum realistic temp swing
