@@ -7,8 +7,28 @@
   <link rel="stylesheet" href="optimizer.css" />
   <style>
     body {
-      background: url('mpback.jpg') center/cover no-repeat;
-      background-attachment: fixed;
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background: url('mpback.jpg') center/cover no-repeat fixed;
+      filter: blur(4px); /* adjust blur here */
+      z-index: -2;
+    }
+
+    .overlay {
+      background: rgba(255, 255, 255, 0.75); /* translucent white */
+      min-height: 100vh;
+      position: relative;
+      z-index: 1;
     }
   </style>
 </head>
@@ -25,78 +45,80 @@
     </nav>
   </header>
 
-  <main>
-    <div class="form-container">
-      <h1>Smart Water Optimizer</h1>
-      <form id="optimizer-form">
-        <div class="form-group">
-          <label for="zip">📍 ZIP Code:</label>
-          <input id="zip" placeholder="e.g. 95340" />
-        </div>
+  <div class="overlay">
+    <main>
+      <div class="form-container">
+        <h1>Smart Water Optimizer</h1>
+        <form id="optimizer-form">
+          <div class="form-group">
+            <label for="zip">📍 ZIP Code:</label>
+            <input id="zip" placeholder="e.g. 95340" />
+          </div>
 
-        <div class="form-group">
-          <label for="crop">🌱 Crop:</label>
-          <select id="crop">
-            <option value="">-- Choose --</option>
-            <option value="Tomato">Tomato</option>
-            <option value="Almond">Almond</option>
-            <option value="Grape">Grape</option>
-            <option value="Citrus">Citrus</option>
-            <option value="Lettuce">Lettuce</option>
-            <option value="Corn">Corn</option>
-            <option value="Spinach">Spinach</option>
-          </select>
-        </div>
+          <div class="form-group">
+            <label for="crop">🌱 Crop:</label>
+            <select id="crop">
+              <option value="">-- Choose --</option>
+              <option value="Tomato">Tomato</option>
+              <option value="Almond">Almond</option>
+              <option value="Grape">Grape</option>
+              <option value="Citrus">Citrus</option>
+              <option value="Lettuce">Lettuce</option>
+              <option value="Corn">Corn</option>
+              <option value="Spinach">Spinach</option>
+            </select>
+          </div>
 
-        <div class="form-group">
-          <label for="area">📀 Land Area (m²):</label>
-          <input id="area" type="number" placeholder="e.g. 1000" />
-        </div>
+          <div class="form-group">
+            <label for="area">📀 Land Area (m²):</label>
+            <input id="area" type="number" placeholder="e.g. 1000" />
+          </div>
 
-        <div class="form-group">
-          <label for="knowRoot">📏 Do you know the root depth?</label>
-          <select id="knowRoot">
-            <option value="">-- Choose --</option>
-            <option value="no">No</option>
-            <option value="yes">Yes</option>
-          </select>
-        </div>
+          <div class="form-group">
+            <label for="knowRoot">📏 Do you know the root depth?</label>
+            <select id="knowRoot">
+              <option value="">-- Choose --</option>
+              <option value="no">No</option>
+              <option value="yes">Yes</option>
+            </select>
+          </div>
 
-        <div class="form-group" id="rootSection" style="display:none;">
-          <label for="rootDepth">Root Depth (cm):</label>
-          <input id="rootDepth" type="number" />
-        </div>
+          <div class="form-group" id="rootSection" style="display:none;">
+            <label for="rootDepth">Root Depth (cm):</label>
+            <input id="rootDepth" type="number" />
+          </div>
 
-        <div class="form-group" id="ageSection" style="display:none;">
-          <label for="cropAge">Crop Age (months):</label>
-          <input id="cropAge" type="number" />
-        </div>
+          <div class="form-group" id="ageSection" style="display:none;">
+            <label for="cropAge">Crop Age (months):</label>
+            <input id="cropAge" type="number" />
+          </div>
 
-        <div class="form-group">
-          <label for="gauge">☔ Rain Gauge Used?</label>
-          <select id="gauge">
-            <option value="">-- Choose --</option>
-            <option value="no">No</option>
-            <option value="yes">Yes</option>
-          </select>
-        </div>
+          <div class="form-group">
+            <label for="gauge">☔ Rain Gauge Used?</label>
+            <select id="gauge">
+              <option value="">-- Choose --</option>
+              <option value="no">No</option>
+              <option value="yes">Yes</option>
+            </select>
+          </div>
 
-        <div class="form-group" id="rainSection" style="display:none;">
-          <label for="rain">Rainfall Today (mm):</label>
-          <input id="rain" type="number" />
-        </div>
+          <div class="form-group" id="rainSection" style="display:none;">
+            <label for="rain">Rainfall Today (mm):</label>
+            <input id="rain" type="number" />
+          </div>
 
-        <div class="form-group">
-          <label for="applied">💦 Water Applied Today (liters):</label>
-          <input id="applied" type="number" />
-        </div>
+          <div class="form-group">
+            <label for="applied">💦 Water Applied Today (liters):</label>
+            <input id="applied" type="number" />
+          </div>
 
-        <button type="button" onclick="getWateringPlan()">Get 5-Day Schedule</button>
-      </form>
+          <button type="button" onclick="getWateringPlan()">Get 5-Day Schedule</button>
+        </form>
 
-      <div id="schedule"></div>
-    </div>
-  </main>
+        <div id="schedule"></div>
+      </div>
+    </main>
+  </div>
 
   <script>
     document.getElementById("knowRoot").addEventListener("change", e => {

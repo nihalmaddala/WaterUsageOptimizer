@@ -53,98 +53,132 @@ body {
     box-sizing: border-box;
   }
   
+  /* === LAYOUT & CONTAINER === */
+.form-container {
+  background: white;
+  padding: 2.5rem 4rem;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  max-width: 900px;
+  width: 100%;
+  margin: 6rem auto;
+  color: #333;
+}
+
+/* === TYPOGRAPHY === */
+h1 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #004d00;
+}
+
+/* === FORM ELEMENTS === */
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1.2rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #f9f9f9;
+  font-size: 1rem;
+  color: #333;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+input,
+select {
+  line-height: 1.2;
+  height: 42px; 
+  box-sizing: border-box;
+  appearance: none; 
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+
+input:focus,
+select:focus {
+  border-color: #1fc2a0;
+  outline: none;
+  background: #fff;
+  box-shadow: 0 0 5px rgba(31, 194, 160, 0.2);
+}
+
+/* === BUTTON === */
+button {
+  width: 100%;
+  padding: 0.9rem;
+  font-size: 1.05rem;
+  background-color: #1fc2a0;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  margin-top: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background-color: #17a88e;
+}
+
+/* === CALENDAR RESULTS === */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.calendar-day {
+  background: #f8f8f8;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.calendar-day h4 {
+  margin-bottom: 0.4rem;
+  font-size: 1.1rem;
+  color: #00695c;
+}
+
+.calendar-day p {
+  font-size: 0.95rem;
+  margin: 0.3rem 0;
+}
+
+.soil-box {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  padding: 0.6rem;
+  border-radius: 8px;
+  margin: 0.7rem 0;
+}
+
+.summary-box {
+  margin-top: 2rem;
+  background: #e8f5e9;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border-left: 6px solid #2e7d32;
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+
+/* === RESPONSIVENESS === */
+@media (max-width: 768px) {
   .form-container {
-    background: #006400;
-    padding: 2.5rem;
-    border-radius: 12px;
-    color: white;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    padding: 2rem 1.5rem;
+    margin: 4rem 1rem;
   }
-  
-  h1 {
-    font-size: 2.2rem;
-    margin-bottom: 1.5rem;
-    color: #fff;
-    text-align: center;
-  }
-  
-  label {
-    display: block;
-    font-weight: bold;
-    margin-top: 1.2rem;
-  }
-  
-  input,
-  select,
-  button {
-    display: block;
-    width: 100%;
-    padding: 0.6rem;
-    margin-top: 0.3rem;
-    border: none;
-    border-radius: 6px;
-    font-size: 1rem;
-    box-sizing: border-box;
-  }
-  
-  input,
-  select {
-    background: #fff;
-    color: #000;
-  }
-  
-  button {
-    background-color: #1fc2a0;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 2rem;
-  }
-  
-  button:hover {
-    background-color: #17a88e;
-  }
-  
-  .form-group {
-    margin-bottom: 1.5rem;
-  }
-  
-  .calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 1.5rem;
-    margin-top: 2rem;
-  }
-  
-  .calendar-day {
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    padding: 1rem;
-    background: #ffffff;
-    color: #004d00;
-    text-align: center;
-    font-size: 0.95rem;
-  }
-  
-  .calendar-day h4 {
-    margin-bottom: 0.4rem;
-    font-size: 1rem;
-    color: #2e8b57;
-  }
-  
-  .calendar-day p {
-    margin: 0.3rem 0;
-    font-size: 0.88rem;
-  }
-  
-  .summary-box {
-    white-space: pre-line;
-    background: #f0fff4;
-    padding: 1.2rem;
-    border-left: 4px solid #2e8b57;
-    margin-top: 2rem;
-    color: #000;
-    font-size: 1rem;
-    border-radius: 6px;
-  }
-  
+}
