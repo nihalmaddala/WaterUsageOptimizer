@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Realistic Water Optimizer</title>
+  <link rel="stylesheet" href="frontpage.css" />
+  <style>
+    body { font-family: sans-serif; background: #f9fdf9; padding: 2rem; }
+    .container { max-width: 800px; margin: auto; background: white; padding: 2rem; border-radius: 10px; }
+    label { font-weight: bold; margin-top: 1rem; display: block; }
+    input, select, button { width: 100%; padding: 0.5rem; margin-top: 0.3rem; border-radius: 6px; }
+    button { background-color: #2e8b57; color: white; font-weight: bold; margin-top: 1.5rem; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    th, td { padding: 0.75rem; border: 1px solid #ccc; text-align: center; }
+    th { background: #e8f5e9; }
+    #schedule { margin-top: 2rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>💧 Realistic Water Optimizer</h2>
+
+    <label for="zip">📍 ZIP Code:</label>
+    <input id="zip" placeholder="e.g. 95340" />
+
+    <label for="crop">🌱 Crop:</label>
+    <select id="crop">
+      <option value="">-- Choose --</option>
+      <option value="Tomato">Tomato</option>
+      <option value="Almond">Almond</option>
+      <option value="Grape">Grape</option>
+      <option value="Citrus">Citrus</option>
+      <option value="Lettuce">Lettuce</option>
+      <option value="Corn">Corn</option>
+      <option value="Spinach">Spinach</option>
+    </select>
+
+    <label for="area">📐 Land Area (m²):</label>
+    <input id="area" type="number" placeholder="e.g. 500" />
+
+    <label for="knowRoot">📏 Do you know the root depth?</label>
+    <select id="knowRoot">
+      <option value="no">No</option>
+      <option value="yes">Yes</option>
+    </select>
+
+    <div id="rootSection" style="display:none;">
+      <label for="rootDepth">Root Depth (cm):</label>
+      <input id="rootDepth" type="number" />
+    </div>
+
+    <div id="ageSection" style="display:none;">
+      <label for="cropAge">Crop Age (months):</label>
+      <input id="cropAge" type="number" />
+    </div>
+
+    <label for="applied">💦 Water Applied Today (liters):</label>
+    <input id="applied" type="number" />
+
+    <label for="gauge">☔ Rain Gauge Used?</label>
+    <select id="gauge">
+      <option value="no">No</option>
+      <option value="yes">Yes</option>
+    </select>
+
+    <div id="rainSection" style="display:none;">
+      <label for="rain">Rainfall Today (mm):</label>
+      <input id="rain" type="number" />
+    </div>
+
+    <button onclick="getWateringPlan()">Get 5-Day Schedule</button>
+
+    <div id="schedule"></div>
+  </div>
+
+  <script>
+    const kcValues = {
+      Tomato: 1.05, Almond: 0.75, Grape: 0.65, Citrus: 0.8,
+      Lettuce: 1.0, Corn: 0.95, Spinach: 1.1
+    };
+
+    const defaultRoots = {
+      Tomato: 30, Almond: 120, Grape: 100, Citrus: 100,
+      Lettuce: 20, Corn: 80, Spinach: 25
+    };
+
+    document.getElementById("knowRoot").addEventListener("change", e => {
+      const showRoot = e.target.value === "yes";
+      document.getElementById("rootSection").style.display = showRoot ? "block" : "none";
+      document.getElementById("ageSection").style.display = !showRoot ? "block" : "none";
+    });
+
+    document.getElementById("gauge").addEventListener("change", e => {
+      document.getElementById("rainSection").style.display = e.target.value === "yes" ? "block" : "none";
+    });
+
+    async function getWateringPlan() {
+      const zip = document.getElementById("zip").value;
+      const crop = document.getElementById("crop").value;
+      const area = parseFloat(document.getElementById("area").value) || 100;
+      const kc = kcValues[crop] || 1.0;
+
+      const knowRoot = document.getElementById("knowRoot").value;
+      const rootInput = parseFloat(document.getElementById("rootDepth").value);
+      const age = parseFloat(document.getElementById("cropAge").value) || 1;
+      const rootCM = knowRoot === "yes"
+        ? rootInput
+        : Math.min((defaultRoots[crop] || 30) * (age / 12), defaultRoots[crop] || 30);
+      const rootDepthM = rootCM / 100;
+
+      const appliedLiters = parseFloat(document.getElementById("applied").value) || 0;
+      const rainMM = document.getElementById("gauge").value === "yes"
+        ? (parseFloat(document.getElementById("rain").value) || 0)
+        : 0;
+
+      const geo = await fetch(`https://api.openweathermap.org/geo/1.0/zip?zip=${zip},US&appid=f93ee9efeaaa0f31307a3f03995e4a3a`);
+      const geoData = await geo.json();
+      const city = geoData.name || "your area";
+
+      // Simulate 5-day forecast (you can replace this with Open-Meteo API if needed)
+      const et0 = [4.0, 4.2, 4.1, 4.3, 4.0];
+      const rain = [rainMM, 0.0, 2.0, 0.0, 0.0];
+
+      const schedule = [];
+      for (let i = 0; i < 5; i++) {
+        const etc = et0[i] * kc;
+        const effectiveRain = rain[i] * 0.75;
+        const netMM = Math.max(0, etc - effectiveRain);
+        const liters = Math.max(0, (netMM * area) - (i === 0 ? appliedLiters : 0));
+
+        const date = new Date();
+        date.setDate(date.getDate() + i);
+        schedule.push({
+          date: date.toDateString(),
+          et0: et0[i].toFixed(1),
+          etc: etc.toFixed(1),
+          rain: rain[i],
+          liters: liters.toFixed(1)
+        });
+      }
+
+      document.getElementById("schedule").innerHTML = `
+        <h3>📍 5-Day Watering Plan for ${city}</h3>
+        <table>
+          <tr><th>Date</th><th>ET₀ (mm)</th><th>ETc (mm)</th><th>Rain (mm)</th><th>Water Needed (L)</th></tr>
+          ${schedule.map(d => `
+            <tr>
+              <td>${d.date}</td>
+              <td>${d.et0}</td>
+              <td>${d.etc}</td>
+              <td>${d.rain}</td>
+              <td><strong>${d.liters}</strong></td>
+            </tr>`).join("")}
+        </table>
+      `;
+    }
+  </script>
+</body>
+</html>
