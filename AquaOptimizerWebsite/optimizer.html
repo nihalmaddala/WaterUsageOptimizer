@@ -181,9 +181,13 @@
     ${data.schedule.map(d => {
       const cropName = document.getElementById("crop").value;
       const normalizedCrop = normalizeCropName(cropName);
-      const status = getMoistureMessage(normalizedCrop, d.soil_moisture);
+      const status = getMoistureMessage(normalizeCropName(crop), d.soil_moisture);
+      let moistureClass = "";
+      if (status.includes("Optimal")) moistureClass = "optimal";
+      else if (status.includes("Too Dry")) moistureClass = "too-dry";
+      else if (status.includes("Too Wet")) moistureClass = "too-wet";
               return `
-              <div class="calendar-day">
+             <div class="calendar-day ${moistureClass}">
                 <h4>${d.day.split(" ")[0]}</h4>
                 <p>${d.date}</p>
                 <p>🌡️ Temp: <strong>${d.temp}°F</strong></p>

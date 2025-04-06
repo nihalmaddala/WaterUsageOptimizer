@@ -1,10 +1,38 @@
 body {
-  font-family: 'Montserrat', sans-serif;
-    background: #f9fdf9;
-    scroll-behavior: smooth;
-    margin: 0;
-  }
-  /*hello*/
+  font-family: 'Segoe UI', sans-serif;
+  scroll-behavior: smooth;
+  position: relative;
+  z-index: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-image: url("mpback.jpg");
+  background-size: cover;
+  background-position: center;
+  filter: blur(10px) brightness(0.8);
+  z-index: -2;
+  opacity: 1;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.3); /* Optional light tint */
+  z-index: -1;
+}
+
   header {
     position: fixed;
     top: 0;
@@ -61,22 +89,21 @@ body {
   
   main {
     padding: 140px 2rem 4rem;
-    max-width: 1200px;
+    max-width: 1400px;
     margin: auto;
-    box-sizing: border-box;
   }
   
   /* === LAYOUT & CONTAINER === */
-.form-container {
-  background: white;
-  padding: 2.5rem 4rem;
-  border-radius: 14px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  max-width: 900px;
-  width: 100%;
-  margin: 6rem auto;
-  color: #333;
-}
+  .form-container {
+    max-width: 1100px;     /* narrower and centered */
+    width: 100%;
+    margin: 6rem auto;
+    background: white;
+    padding: 2.5rem 3rem;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    color: #333;
+  }
 
 /* === TYPOGRAPHY === */
 h1 {
@@ -151,17 +178,37 @@ button:hover {
 /* === CALENDAR RESULTS === */
 .calendar-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(5, 1fr);  
+  justify-content: center;
+  gap: 1.2rem;
   margin-top: 2rem;
+  padding-bottom: 1rem;
 }
 
 .calendar-day {
-  background: #f8f8f8;
+  background: rgba(255, 255, 255, 0.85);
   border-radius: 10px;
   padding: 1rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 0 transparent;
 }
+
+.calendar-day.optimal:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 0 16px 3px rgba(46, 125, 50, 0.5);
+}
+
+.calendar-day.too-dry:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 0 16px 3px rgba(255, 165, 0, 0.5); 
+}
+
+.calendar-day.too-wet:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 0 16px 3px rgba(33, 150, 243, 0.5); 
+}
+
 
 .calendar-day h4 {
   margin-bottom: 0.4rem;
