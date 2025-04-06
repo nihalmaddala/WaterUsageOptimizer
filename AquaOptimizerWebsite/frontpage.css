@@ -1,10 +1,16 @@
-/* Basic Reset & Font */
 body {
-  font-family: Arial, sans-serif;
-  background: #f3f8f2;
-  margin: 0;
-  padding: 0;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
 }
+
+h1, h2, h3 {
+  font-weight: 700;
+}
+* {
+  font-family: 'Montserrat', sans-serif;
+}
+
+
 
 /* Header Styling */
 header {
@@ -16,7 +22,7 @@ header {
 
 /* Main Container */
 .container {
-  max-width: 1100px;
+  max-width: 1250px; /* Increased for one-row layout */
   margin: 2rem auto;
   padding: 1.5rem;
   background-color: white;
@@ -67,47 +73,58 @@ button:hover {
   border: 1px solid #cce4d6;
 }
 
-/* Forecast Layout (one line) */
+/* Forecast Layout: Clean row, no slider */
 .forecast-grid {
   display: flex;
   justify-content: space-between;
+  gap: 1.2rem;
   flex-wrap: nowrap;
-  overflow-x: auto;
-  gap: 1rem;
+  overflow-x: hidden;
   margin-top: 1rem;
 }
 
 /* Forecast Cards */
 .forecast-card {
-  flex: 1;
-  min-width: 160px;
-  max-width: 160px;
+  width: 180px;
   padding: 1rem;
   background-color: #ffffff;
   border: 1px solid #cce4d6;
-  border-radius: 10px;
+  border-radius: 16px;
   text-align: center;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
 }
 
-/* Soil Section Highlight */
+.forecast-card:hover {
+  transform: translateY(-3px);
+}
+
+/* Soil Info Section */
 .soil {
   background-color: #e6f7eb;
   border-radius: 6px;
   padding: 0.5rem;
-  margin-top: 0.5rem;
+  margin-top: 0.7rem;
   font-size: 0.9rem;
+  text-align: left;
 }
 
-/* Moisture Status Text */
+/* Moisture Status */
 .moisture-status {
   font-weight: bold;
   font-size: 0.95rem;
-  display: block;
   margin-top: 0.3rem;
 }
 
-/* Calendar Checkboxes */
+/* Watering Log */
 .calendar input {
   margin-right: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .forecast-grid {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
 }
