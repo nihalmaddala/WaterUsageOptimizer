@@ -2,54 +2,170 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Miraqua - Smart Water Assistant</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Miraqua | Smart Irrigation</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', sans-serif; scroll-behavior: smooth; }
 
-  <link rel="stylesheet" href="frontpage.css" />
+    /* NAVBAR */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 1.2rem 4rem;
+      background: rgba(0, 0, 0, 0.75);
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .logo {
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2.5rem;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+      font-size: 1rem;
+      transition: 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      color: #1fc2a0;
+      border-bottom: 2px solid #1fc2a0;
+    }
+
+    /* HERO SECTION */
+    #hero {
+      background: url('mpback.jpg') center/cover no-repeat;
+      height: 100vh;
+      position: relative;
+      color: white;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 0 2rem;
+    }
+
+    #hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px); /* Safari */
+      z-index: 1;
+    }
+
+    #hero > div {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+    }
+
+    #hero h1 {
+      font-size: 2.8rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      text-shadow: 1px 1px 3px black;
+    }
+
+    #hero p {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+      text-shadow: 1px 1px 2px black;
+    }
+
+    .hero-btn {
+      background-color: #1fc2a0;
+      color: white;
+      padding: 0.8rem 1.5rem;
+      font-weight: bold;
+      font-size: 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    section {
+      padding: 100px 4rem;
+    }
+
+    #about {
+      background: black;
+      color: white;
+    }
+
+    #optimizer {
+      background: #e1f5fe;
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1.1rem;
+      max-width: 800px;
+    }
+  </style>
 </head>
 <body>
+
+  <!-- ✅ NAVIGATION -->
   <header>
-    <h1>Miraqua</h1>
-    <p>Smart Irrigation Recommendations for Farmers</p>
-    
+    <div class="logo">Miraqua 💧</div>
+    <nav>
+      <ul>
+        <li><a href="#hero">HOME</a></li>
+        <li><a href="#about">ABOUT</a></li>
+        <li><a href="optimizer.html">OPTIMIZER</a></li>
+      </ul>
+    </nav>
   </header>
 
-  <div class="container">
-    <!-- Crop Dropdown -->
-    <label for="crop">🌿 Select Crop:</label>
-    <select id="crop">
-      <option disabled selected>-- Select a crop --</option>
-    </select>
-
-    <!-- Zip code input -->
-    <label for="location">Enter Zip Code:</label>
-    <input type="text" id="location" placeholder="e.g. 95340" />
-    <button onclick="getWeather()">Get Weather</button>
-
-    <!-- Forecast Section -->
-    <div class="weather">
-      <h3>5-Day Forecast with Soil Moisture</h3>
-      <div class="forecast-grid" id="forecastGrid"></div>
+  <!-- ✅ HERO SECTION -->
+  <section id="hero">
+    <div>
+      <h1>We Craft More Than Crops — We Craft Confidence.</h1>
+      <p>Precision irrigation, powered by data. Sustainable. Smart. Simple.</p>
+      <a class="hero-btn" href="optimizer.html">Launch Optimizer</a>
     </div>
+  </section>
 
-    <!-- Watering Suggestion -->
-    <div class="recommendation">
-      <h3>Watering Recommendation</h3>
-      <p>(AI-generated suggestion will appear here)</p>
-    </div>
+  <!-- ✅ ABOUT SECTION -->
+  <section id="about">
+    <h2>About Miraqua</h2>
+    <p>
+      Miraqua is your intelligent irrigation assistant. It combines real-time weather, crop-specific science, and machine learning to create water-efficient schedules.
+      With Miraqua, farmers conserve water, reduce costs, and ensure crops get exactly what they need — no more, no less.
+    </p>
+  </section>
 
-    <!-- Watering Log -->
-    <div class="calendar">
-      <h3>Watering Log</h3>
-      <label><input type="checkbox" /> Watered Today</label>
-      <label><input type="checkbox" /> Watered Yesterday</label>
-      <label><input type="checkbox" /> Watered 2 Days Ago</label>
-    </div>
-  </div>
+  <!-- ✅ OPTIMIZER SECTION -->
+  <section id="optimizer">
+    <h2>Smart Water Optimizer</h2>
+    <p>
+      Our 5-day irrigation planner uses your land data, weather forecasts, and crop type to build an optimal watering plan.
+      Simply enter your ZIP code, crop, and area — Miraqua handles the rest.
+    </p>
 
-  <!-- JavaScript Imports -->
-  <script src="cropMoistureData.js"></script>
-  <script src="script.js"></script>
+  </section>
+
 </body>
 </html>
