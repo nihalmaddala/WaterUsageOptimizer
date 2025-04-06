@@ -138,6 +138,6 @@ def process_farmer_data(farmer_csv):
     result_df = pd.DataFrame(results)
     result_df.to_csv("adjusted_aw_output.csv", index=False)
     print("✅ Saved: adjusted_aw_output.csv")
-
+#holymoly guacomoly
 # === Run the prediction pipeline ===
 process_farmer_data("farmer_input.csv")
