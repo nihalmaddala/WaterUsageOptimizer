@@ -77,7 +77,8 @@ function displayForecastWithSoil(weatherData, soilData) {
     const dateObj = new Date(weatherData.list[i].dt * 1000);
     const day = dateObj.toLocaleDateString("en-US", { weekday: "short" });
     const date = dateObj.toLocaleDateString("en-CA");
-    const temp = Math.round(weatherData.list[i].main.temp * 10) / 10;
+    const celsius = weatherData.list[i].main.temp;
+const fahrenheit = Math.round((celsius * 9) / 5 + 32);
     const rain = weatherData.list[i].rain?.["3h"] || 0;
 
     let avgSoil = "N/A";
@@ -107,7 +108,7 @@ function displayForecastWithSoil(weatherData, soilData) {
     card.className = "forecast-card";
     card.innerHTML = `
       <strong>${day}</strong><br>${dateObj.toLocaleDateString()}<br>
-      🌡️ ${temp}°C<br>
+      🌡️ ${fahrenheit}°F<br>
       🌧️ ${rain} mm
       <div class="soil">
         <span style="display: block; font-size: 0.85rem; color: #555;">
