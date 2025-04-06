@@ -44,6 +44,7 @@ function getMoistureMessage(cropName, value) {
 const API_KEY = "f93ee9efeaaa0f31307a3f03995e4a3a"; // Replace with your actual API key
 
 async function getWeather() {
+  document.querySelector('.recommendation').classList.remove("show");
   const zipInput = document.getElementById("location").value || "95340";
 
   const geoUrl = `https://api.openweathermap.org/geo/1.0/zip?zip=${zipInput},US&appid=${API_KEY}`;
@@ -119,4 +120,7 @@ function displayForecastWithSoil(weatherData, soilData) {
     `;
     forecastGrid.appendChild(card);
   }
+  document.querySelector('.recommendation').classList.add("show");
 }
+
+

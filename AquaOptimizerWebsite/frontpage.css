@@ -64,7 +64,6 @@ button:hover {
 
 /* Forecast Sections */
 .weather,
-.recommendation,
 .calendar {
   margin-top: 2rem;
   padding: 1.25rem;
@@ -73,14 +72,34 @@ button:hover {
   border: 1px solid #cce4d6;
 }
 
-/* Forecast Layout: Clean row, no slider */
+.recommendation {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.4s ease;
+  margin-top: 2rem;
+  padding: 1.25rem;
+  border-radius: 10px;
+  background: #f0faf5;
+  border-left: 5px solid #2c6e49;
+  font-size: 1.1rem;
+  font-weight: 500;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+}
+
+.recommendation.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
 .forecast-grid {
   display: flex;
   justify-content: space-between;
   gap: 1.2rem;
   flex-wrap: nowrap;
-  overflow-x: hidden;
   margin-top: 1rem;
+  padding: 0 1rem;
+  align-items: stretch;        
 }
 
 /* Forecast Cards */
@@ -88,16 +107,26 @@ button:hover {
   width: 180px;
   padding: 1rem;
   background-color: #ffffff;
-  border: 1px solid #cce4d6;
+  border: 1px solid #d7e8dc;
   border-radius: 16px;
   text-align: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   flex-shrink: 0;
-  transition: transform 0.2s ease;
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+ 
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .forecast-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-6px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+  z-index: 2;
 }
 
 /* Soil Info Section */
@@ -122,9 +151,23 @@ button:hover {
   margin-right: 0.5rem;
 }
 
+.forecast-card .moisture-status {
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+.forecast-card {
+  cursor: default;
+}
+
+
+
 @media (max-width: 768px) {
   .forecast-grid {
     flex-wrap: nowrap;
     overflow-x: auto;
+    padding: 0 1rem;
   }
 }
+
+
