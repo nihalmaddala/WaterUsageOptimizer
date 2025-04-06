@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Miraqua - Smart Water Assistant</title>
   <link rel="stylesheet" href="frontpage.css" />
 </head>
@@ -13,42 +13,40 @@
   </header>
 
   <div class="container">
-    <div class="form-section">
-      <label for="crop">🌿 Select Crop:</label>
-      <select id="crop">
-        <option value="">-- Choose a crop --</option>
-        <option value="tomato">Tomato</option>
-        <option value="almond">Almond</option>
-        <option value="grape">Grape</option>
-      </select>
+    <!-- Crop Dropdown -->
+    <label for="crop">🌿 Select Crop:</label>
+    <select id="crop">
+      <option disabled selected>-- Select a crop --</option>
+    </select>
 
-      <label for="location">📍 Enter Zip Code:</label>
-      <input type="text" id="location" placeholder="e.g. 95340" />
-      <button onclick="getWeather()">Get Weather</button>
-    </div>
+    <!-- Zip code input -->
+    <label for="location">Enter Zip Code:</label>
+    <input type="text" id="location" placeholder="e.g. 95340" />
+    <button onclick="getWeather()">Get Weather</button>
 
+    <!-- Forecast Section -->
     <div class="weather">
-      <h3>☀️ 5-Day Weather Forecast</h3>
-      <div class="forecast-grid" id="forecastGrid">
-        <!-- Weather forecast cards will be added here dynamically -->
-      </div>
+      <h3>5-Day Forecast with Soil Moisture</h3>
+      <div class="forecast-grid" id="forecastGrid"></div>
     </div>
 
-    
-
+    <!-- Watering Suggestion -->
     <div class="recommendation">
-      <h3>💧 Watering Recommendation</h3>
+      <h3>Watering Recommendation</h3>
       <p>(AI-generated suggestion will appear here)</p>
     </div>
 
+    <!-- Watering Log -->
     <div class="calendar">
-      <h3>📆 Watering Log</h3>
-      <label><input type="checkbox" /> Watered Today</label><br />
-      <label><input type="checkbox" /> Watered Yesterday</label><br />
+      <h3>Watering Log</h3>
+      <label><input type="checkbox" /> Watered Today</label>
+      <label><input type="checkbox" /> Watered Yesterday</label>
       <label><input type="checkbox" /> Watered 2 Days Ago</label>
     </div>
   </div>
 
+  <!-- JavaScript Imports -->
+  <script src="cropMoistureData.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

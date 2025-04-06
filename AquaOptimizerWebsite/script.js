@@ -1,50 +1,48 @@
-const API_KEY = "f93ee9efeaaa0f31307a3f03995e4a3a";
+// === Crop moisture data logic ===
 
-// Tooltip text for each crop
-const cropTooltips = {
-  tomato: "Tomatoes need consistent moisture. Low soil moisture can lead to cracking and poor fruit quality.",
-  almond: "Almonds are drought-tolerant but need regular moisture during nut development.",
-  grape: "Grapes benefit from drier soil to concentrate flavor, but need watering during flowering and fruit set."
-};
-
-// Ideal soil moisture ranges (m³/m³)
-const cropMoistureRanges = {
-  tomato: { min: 0.20, max: 0.30 },
-  almond: { min: 0.15, max: 0.25 },
-  grape:  { min: 0.10, max: 0.20 }
-};
-
-// Get tooltip based on selected crop
-function getCropTooltip() {
+function populateCropDropdown(data) {
   const cropSelect = document.getElementById("crop");
-  const cropValue = cropSelect.value;
-  return cropTooltips[cropValue] || "Soil moisture helps determine how much irrigation is needed.";
+  data.forEach(crop => {
+    const option = document.createElement("option");
+    option.value = crop.cropname;
+    option.textContent = crop.cropname;
+    cropSelect.appendChild(option);
+  });
+}
+populateCropDropdown(cropMoistureData);
+
+function getCropTooltip(cropName) {
+  const match = cropMoistureData.find(c => c.cropname === cropName);
+  return match ? match.description : "Soil moisture guidance not available.";
 }
 
-// Check if soil moisture is ideal for the selected crop
-function isMoistureIdeal(crop, value) {
-  const range = cropMoistureRanges[crop];
-  if (!range) return null;
-  return value >= range.min && value <= range.max;
+function formatRange(cropName) {
+  const match = cropMoistureData.find(c => c.cropname === cropName);
+  return match ? `${parseFloat(match.low).toFixed(2)}–${parseFloat(match.high).toFixed(2)} m³/m³` : "N/A";
 }
 
-// Format the ideal moisture range as a string
-function formatRange(crop) {
-  const range = cropMoistureRanges[crop];
-  if (!range) return "N/A";
-  return `${range.min.toFixed(2)}–${range.max.toFixed(2)} m³/m³`;
+function isMoistureIdeal(cropName, value) {
+  const match = cropMoistureData.find(c => c.cropname === cropName);
+  if (!match) return null;
+  const min = parseFloat(match.low);
+  const max = parseFloat(match.high);
+  return value >= min && value <= max;
 }
 
-// Return user-friendly moisture status message
-function getMoistureMessage(crop, value) {
-  const range = cropMoistureRanges[crop];
-  if (!range) return "";
-  if (value < range.min) return "⚠️ Too Dry";
-  if (value > range.max) return "⚠️ Too Wet";
+function getMoistureMessage(cropName, value) {
+  const match = cropMoistureData.find(c => c.cropname === cropName);
+  if (!match) return "";
+  const min = parseFloat(match.low);
+  const max = parseFloat(match.high);
+  if (value < min) return "⚠️ Too Dry";
+  if (value > max) return "⚠️ Too Wet";
   return "✅ Optimal";
 }
 
-// Main function to fetch and display weather + soil
+// === Weather & Soil Logic ===
+
+const API_KEY = "f93ee9efeaaa0f31307a3f03995e4a3a"; // Replace with your actual API key
+
 async function getWeather() {
   const zipInput = document.getElementById("location").value || "95340";
 
@@ -65,7 +63,6 @@ async function getWeather() {
   displayForecastWithSoil(weatherData, soilData);
 }
 
-// Display combined forecast + soil data
 function displayForecastWithSoil(weatherData, soilData) {
   const forecastGrid = document.getElementById("forecastGrid");
   forecastGrid.innerHTML = "";
@@ -78,15 +75,14 @@ function displayForecastWithSoil(weatherData, soilData) {
   for (let i = 0; i < weatherData.list.length && i / 8 < 5; i += 8) {
     const dateObj = new Date(weatherData.list[i].dt * 1000);
     const day = dateObj.toLocaleDateString("en-US", { weekday: "short" });
-    const date = dateObj.toLocaleDateString("en-CA"); // YYYY-MM-DD
+    const date = dateObj.toLocaleDateString("en-CA");
     const temp = Math.round(weatherData.list[i].main.temp * 10) / 10;
     const rain = weatherData.list[i].rain?.["3h"] || 0;
 
     let avgSoil = "N/A";
     let idealStatus = "";
     let avgFloat = null;
-    const cropSelect = document.getElementById("crop");
-    const crop = cropSelect.value;
+    const crop = document.getElementById("crop").value;
 
     if (time) {
       const matchIndex = time.findIndex(t => t.startsWith(date));
@@ -102,7 +98,6 @@ function displayForecastWithSoil(weatherData, soilData) {
       }
     }
 
-    const moistureRangeText = crop ? `Ideal: ${formatRange(crop)}` : "";
     const moistureStatusText = (avgFloat !== null && crop)
       ? getMoistureMessage(crop, avgFloat)
       : "";
@@ -115,11 +110,10 @@ function displayForecastWithSoil(weatherData, soilData) {
       🌧️ ${rain} mm
       <div class="soil">
         <span style="display: block; font-size: 0.85rem; color: #555;">
-  Soil Moisture 
-  <span title="${getCropTooltip()} (Ideal: ${formatRange(crop)})">ℹ️</span>
-</span>
+          Soil Moisture 
+          <span title="${getCropTooltip(crop)} (Ideal: ${formatRange(crop)})">ℹ️</span>
+        </span>
         🌱 ${avgSoil}${idealStatus}<br>
-        
         <span class="moisture-status">${moistureStatusText}</span>
       </div>
     `;
