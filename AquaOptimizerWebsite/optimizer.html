@@ -2,23 +2,42 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Realistic Water Optimizer</title>
-  <link rel="stylesheet" href="frontpage.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Miraqua - Smart Water Optimizer</title>
   <style>
     body { font-family: sans-serif; background: #f9fdf9; padding: 2rem; }
-    .container { max-width: 800px; margin: auto; background: white; padding: 2rem; border-radius: 10px; }
+    .container { max-width: 1100px; margin: auto; background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.05); }
     label { font-weight: bold; margin-top: 1rem; display: block; }
-    input, select, button { width: 100%; padding: 0.5rem; margin-top: 0.3rem; border-radius: 6px; }
-    button { background-color: #2e8b57; color: white; font-weight: bold; margin-top: 1.5rem; }
-    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-    th, td { padding: 0.75rem; border: 1px solid #ccc; text-align: center; }
-    th { background: #e8f5e9; }
+    input, select, button { width: 100%; padding: 0.5rem; margin-top: 0.3rem; border-radius: 6px; border: 1px solid #ccc; }
+    button { background-color: #2e8b57; color: white; font-weight: bold; margin-top: 1.5rem; cursor: pointer; }
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .calendar-day {
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 1rem;
+      background: #f9fdf9;
+      min-height: 150px;
+    }
+    .calendar-day h4 { margin: 0 0 0.5rem; font-size: 1rem; }
+    .calendar-day p { margin: 0.3rem 0; font-size: 0.9rem; }
     #schedule { margin-top: 2rem; }
+    .summary-box {
+      white-space: pre-line;
+      background: #f0fff4;
+      padding: 1rem;
+      border-left: 4px solid #2e8b57;
+      margin-top: 2rem;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>💧 Realistic Water Optimizer</h2>
+    <h2>💧 Miraqua Smart Water Optimizer</h2>
 
     <label for="zip">📍 ZIP Code:</label>
     <input id="zip" placeholder="e.g. 95340" />
@@ -36,7 +55,7 @@
     </select>
 
     <label for="area">📐 Land Area (m²):</label>
-    <input id="area" type="number" placeholder="e.g. 500" />
+    <input id="area" type="number" placeholder="e.g. 1000" />
 
     <label for="knowRoot">📏 Do you know the root depth?</label>
     <select id="knowRoot">
@@ -74,16 +93,6 @@
   </div>
 
   <script>
-    const kcValues = {
-      Tomato: 1.05, Almond: 0.75, Grape: 0.65, Citrus: 0.8,
-      Lettuce: 1.0, Corn: 0.95, Spinach: 1.1
-    };
-
-    const defaultRoots = {
-      Tomato: 30, Almond: 120, Grape: 100, Citrus: 100,
-      Lettuce: 20, Corn: 80, Spinach: 25
-    };
-
     document.getElementById("knowRoot").addEventListener("change", e => {
       const showRoot = e.target.value === "yes";
       document.getElementById("rootSection").style.display = showRoot ? "block" : "none";
@@ -97,62 +106,57 @@
     async function getWateringPlan() {
       const zip = document.getElementById("zip").value;
       const crop = document.getElementById("crop").value;
-      const area = parseFloat(document.getElementById("area").value) || 100;
-      const kc = kcValues[crop] || 1.0;
-
+      const area = parseFloat(document.getElementById("area").value);
       const knowRoot = document.getElementById("knowRoot").value;
-      const rootInput = parseFloat(document.getElementById("rootDepth").value);
-      const age = parseFloat(document.getElementById("cropAge").value) || 1;
-      const rootCM = knowRoot === "yes"
-        ? rootInput
-        : Math.min((defaultRoots[crop] || 30) * (age / 12), defaultRoots[crop] || 30);
-      const rootDepthM = rootCM / 100;
+      const rootDepth = parseFloat(document.getElementById("rootDepth").value) || 0;
+      const cropAge = parseFloat(document.getElementById("cropAge").value) || 1;
+      const applied = parseFloat(document.getElementById("applied").value) || 0;
+      const gauge = document.getElementById("gauge").value;
+      const rain = parseFloat(document.getElementById("rain").value) || 0;
 
-      const appliedLiters = parseFloat(document.getElementById("applied").value) || 0;
-      const rainMM = document.getElementById("gauge").value === "yes"
-        ? (parseFloat(document.getElementById("rain").value) || 0)
-        : 0;
+      const payload = {
+        zip, crop, area, know_root: knowRoot,
+        root_depth: rootDepth, crop_age: cropAge,
+        applied, gauge, rain
+      };
 
-      const geo = await fetch(`https://api.openweathermap.org/geo/1.0/zip?zip=${zip},US&appid=f93ee9efeaaa0f31307a3f03995e4a3a`);
-      const geoData = await geo.json();
-      const city = geoData.name || "your area";
-
-      // Simulate 5-day forecast (you can replace this with Open-Meteo API if needed)
-      const et0 = [4.0, 4.2, 4.1, 4.3, 4.0];
-      const rain = [rainMM, 0.0, 2.0, 0.0, 0.0];
-
-      const schedule = [];
-      for (let i = 0; i < 5; i++) {
-        const etc = et0[i] * kc;
-        const effectiveRain = rain[i] * 0.75;
-        const netMM = Math.max(0, etc - effectiveRain);
-        const liters = Math.max(0, (netMM * area) - (i === 0 ? appliedLiters : 0));
-
-        const date = new Date();
-        date.setDate(date.getDate() + i);
-        schedule.push({
-          date: date.toDateString(),
-          et0: et0[i].toFixed(1),
-          etc: etc.toFixed(1),
-          rain: rain[i],
-          liters: liters.toFixed(1)
+      try {
+        const res = await fetch("http://127.0.0.1:5000/get_plan", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
         });
-      }
 
-      document.getElementById("schedule").innerHTML = `
-        <h3>📍 5-Day Watering Plan for ${city}</h3>
-        <table>
-          <tr><th>Date</th><th>ET₀ (mm)</th><th>ETc (mm)</th><th>Rain (mm)</th><th>Water Needed (L)</th></tr>
-          ${schedule.map(d => `
-            <tr>
-              <td>${d.date}</td>
-              <td>${d.et0}</td>
-              <td>${d.etc}</td>
-              <td>${d.rain}</td>
-              <td><strong>${d.liters}</strong></td>
-            </tr>`).join("")}
-        </table>
-      `;
+        if (!res.ok) throw new Error("Failed to fetch from backend.");
+        const data = await res.json();
+
+        document.getElementById("schedule").innerHTML = `
+          <h3>Predicted AW: ${data.predicted_aw} ac-ft</h3>
+
+          <div class="calendar-grid">
+            ${data.schedule.map(d => `
+              <div class="calendar-day">
+                <h4>${d.day}</h4>
+                <p>🌤️ ET₀: <strong>${d.et0} mm</strong></p>
+                <p>🌱 ETc: <strong>${d.etc} mm</strong></p>
+                <p>🌧️ Rain: <strong>${d.rain} mm</strong></p>
+                <p>💧 Water: <strong>${d.liters} L</strong></p>
+              </div>
+            `).join("")}
+          </div>
+
+          ${data.summary ? `
+            <div class="summary-box">
+              ${data.summary}
+            </div>` : ""
+          }
+        `;
+      } catch (err) {
+        console.error("❌ Fetch error:", err);
+        document.getElementById("schedule").innerHTML = `
+          <p style="color:red;"><strong>Error:</strong> ${err.message}</p>
+        `;
+      }
     }
   </script>
 </body>
