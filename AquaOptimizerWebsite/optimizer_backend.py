@@ -148,14 +148,15 @@ def get_plan():
     avg_liters = round(total_liters_used / 5, 2)
 
     summary = (
-        f"Based on your crop ({crop}) and ZIP code ({zip_code}), your estimated 5-day water need is {predicted_aw} acre-feet "
-        f"(or {int(total_liters_used)} liters total).\n"
-        f"\nApply about {int(avg_liters)} liters per day."
-        f"\nWe used {'crop age (' + str(crop_age) + ' months)' if know_root == 'no' else 'root depth (' + str(root_depth) + ' cm)'}."
-        f"\n{'Forecasted rainfall used.' if gauge == 'no' else 'Your rainfall input used.'}"
-        f"\n{'Estimated soil moisture used.' if know_moisture == 'no' else 'Your soil moisture input used.'}"
-        f"\n\n💧 Calculations adjusted for cold weather and minimum ET rates for realistic almond irrigation."
-    )
+    f"Based on your crop ({crop}) and ZIP code ({zip_code}), your estimated 5-day water need is "
+    f"{int(total_liters_used)} liters total.\n"
+    f"Apply about {int(avg_liters)} liters per day.\n\n"
+    f"We used your "
+    f"{f'crop age of {crop_age} months to estimate root depth' if know_root == 'to calculate root depth.' else f'provided root depth of {root_depth} cm'}.\n"
+    f"{'Your rainfall input was used.' if gauge == 'yes' else 'Forecasted rainfall was used.'}\n"
+    f"{'Your soil moisture input was used.' if know_moisture == 'yes' else 'Estimated soil moisture was used.'}\n\n"
+    f" Calculations were adjusted for current weather conditions and minimum ET rates for realistic almond irrigation."
+)
 
     return jsonify({
         "predicted_aw": predicted_aw,

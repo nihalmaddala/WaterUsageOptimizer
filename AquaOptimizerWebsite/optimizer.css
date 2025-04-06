@@ -178,9 +178,8 @@ button:hover {
 /* === CALENDAR RESULTS === */
 .calendar-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);  
-  justify-content: center;
-  gap: 1.2rem;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.5rem;
   margin-top: 2rem;
   padding-bottom: 1rem;
 }
@@ -192,11 +191,13 @@ button:hover {
   width: 100%;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 0 0 transparent;
+  border: 1px solid rgba(0, 0, 0, 0.08); 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06); 
 }
 
 .calendar-day.optimal:hover {
   transform: translateY(-6px);
-  box-shadow: 0 0 16px 3px rgba(46, 125, 50, 0.5);
+  box-shadow: 0 0 16px 3px rgba(46, 125, 50, 0.4);
 }
 
 .calendar-day.too-dry:hover {
