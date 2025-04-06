@@ -6,66 +6,6 @@
   <title>Smart Water Optimizer | Miraqua</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="optimizer.css" />
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      position: relative;
-    }
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 100%;
-      background: url('mpback.jpg') center/cover no-repeat fixed;
-      filter: blur(4px);
-      z-index: -2;
-    }
-    .overlay {
-      background: rgba(255, 255, 255, 0.75);
-      min-height: 100vh;
-      position: relative;
-      z-index: 1;
-    }
-    header {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      padding: 1.2rem 4rem;
-      background: rgba(0, 0, 0, 0.75);
-      color: white;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 1000;
-    }
-    .logo {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 1.2rem;
-      font-weight: 400;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-left: -1rem;
-    }
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 2.5rem;
-    }
-    nav ul li a {
-      text-decoration: none;
-      color: white;
-      font-weight: 500;
-      font-size: 1rem;
-      transition: 0.3s ease;
-    }
-    nav ul li a:hover {
-      color: #1fc2a0;
-      border-bottom: 2px solid #1fc2a0;
-    }
-  </style>
 </head>
 <body>
   <header>
@@ -83,83 +23,73 @@
       <div class="form-container">
         <h1>Smart Water Optimizer</h1>
         <form id="optimizer-form">
+          <!-- form inputs unchanged -->
           <div class="form-group">
-  <label for="zip">📍 ZIP Code:</label>
-  <input id="zip" placeholder="e.g. 95340" />
-</div>
-
-<div class="form-group">
-  <label for="crop">🌱 Crop:</label>
-  <select id="crop">
-    <option value="">-- Choose --</option>
-    <option value="Tomato">Tomato</option>
-    <option value="Almond">Almond</option>
-    <option value="Grape">Grape</option>
-    <option value="Citrus">Citrus</option>
-    <option value="Lettuce">Lettuce</option>
-    <option value="Corn">Corn</option>
-    <option value="Spinach">Spinach</option>
-  </select>
-</div>
-
-<div class="form-group">
-  <label for="area">📀 Land Area (m²):</label>
-  <input id="area" type="number" placeholder="e.g. 1000" />
-</div>
-
-<div class="form-group">
-  <label for="knowRoot">📏 Do you know the root depth?</label>
-  <select id="knowRoot">
-    <option value="">-- Choose --</option>
-    <option value="no">No</option>
-    <option value="yes">Yes</option>
-  </select>
-</div>
-
-<div class="form-group" id="rootSection" style="display:none;">
-  <label for="rootDepth">Root Depth (cm):</label>
-  <input id="rootDepth" type="number" />
-</div>
-
-<div class="form-group" id="ageSection" style="display:none;">
-  <label for="cropAge">Crop Age (months):</label>
-  <input id="cropAge" type="number" />
-</div>
-
-<div class="form-group">
-  <label for="gauge">☔ Rain Gauge Used?</label>
-  <select id="gauge">
-    <option value="">-- Choose --</option>
-    <option value="no">No</option>
-    <option value="yes">Yes</option>
-  </select>
-</div>
-
-<div class="form-group" id="rainSection" style="display:none;">
-  <label for="rain">Rainfall Today (mm):</label>
-  <input id="rain" type="number" />
-</div>
-
-<div class="form-group">
-  <label for="knowMoisture">🌡️ Do you know the soil moisture?</label>
-  <select id="knowMoisture">
-    <option value="">-- Choose --</option>
-    <option value="no">No</option>
-    <option value="yes">Yes</option>
-  </select>
-</div>
-
-<div class="form-group" id="moistureSection" style="display:none;">
-  <label for="soilMoisture">🌱 Soil Moisture (m³/m³):</label>
-  <input id="soilMoisture" type="number" step="0.001" />
-</div>
-
-<div class="form-group">
-  <label for="applied">💦 Water Applied Today (liters):</label>
-  <input id="applied" type="number" />
-</div>
-
-<button type="submit">Get 5-Day Schedule</button>
+            <label for="zip">📍 ZIP Code:</label>
+            <input id="zip" placeholder="e.g. 95340" />
+          </div>
+          <div class="form-group">
+            <label for="crop">🌱 Crop:</label>
+            <select id="crop">
+              <option value="">-- Choose --</option>
+              <option value="Tomato">Tomato</option>
+              <option value="Almond">Almond</option>
+              <option value="Grape">Grape</option>
+              <option value="Citrus">Citrus</option>
+              <option value="Lettuce">Lettuce</option>
+              <option value="Corn">Corn</option>
+              <option value="Spinach">Spinach</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="area">📀 Land Area (m²):</label>
+            <input id="area" type="number" placeholder="e.g. 1000" />
+          </div>
+          <div class="form-group">
+            <label for="knowRoot">📏 Do you know the root depth?</label>
+            <select id="knowRoot">
+              <option value="">-- Choose --</option>
+              <option value="no">No</option>
+              <option value="yes">Yes</option>
+            </select>
+          </div>
+          <div class="form-group" id="rootSection" style="display:none;">
+            <label for="rootDepth">Root Depth (cm):</label>
+            <input id="rootDepth" type="number" />
+          </div>
+          <div class="form-group" id="ageSection" style="display:none;">
+            <label for="cropAge">Crop Age (months):</label>
+            <input id="cropAge" type="number" />
+          </div>
+          <div class="form-group">
+            <label for="gauge">☔ Rain Gauge Used?</label>
+            <select id="gauge">
+              <option value="">-- Choose --</option>
+              <option value="no">No</option>
+              <option value="yes">Yes</option>
+            </select>
+          </div>
+          <div class="form-group" id="rainSection" style="display:none;">
+            <label for="rain">Rainfall Today (mm):</label>
+            <input id="rain" type="number" />
+          </div>
+          <div class="form-group">
+            <label for="knowMoisture">🌡️ Do you know the soil moisture?</label>
+            <select id="knowMoisture">
+              <option value="">-- Choose --</option>
+              <option value="no">No</option>
+              <option value="yes">Yes</option>
+            </select>
+          </div>
+          <div class="form-group" id="moistureSection" style="display:none;">
+            <label for="soilMoisture">🌱 Soil Moisture (m³/m³):</label>
+            <input id="soilMoisture" type="number" step="0.001" />
+          </div>
+          <div class="form-group">
+            <label for="applied">💦 Water Applied Today (liters):</label>
+            <input id="applied" type="number" />
+          </div>
+          <button type="submit">Get 5-Day Schedule</button>
         </form>
 
         <div id="schedule"></div>
@@ -167,11 +97,37 @@
     </main>
   </div>
 
+  <script src="cropMoistureData.js"></script>
   <script>
-  document.getElementById("optimizer-form").addEventListener("submit", function(e) {
-    e.preventDefault();
-    getWateringPlan();
-  });
+    // ✅ Normalize crop names to match cropMoistureData
+    function normalizeCropName(name) {
+      const aliases = {
+        "Tomato": "Tomato Fresh",
+        "Almond": "Almonds",
+        "Grape": "Vineyard",
+        "Citrus": "Citrus",
+        "Lettuce": "Lettuce",
+        "Corn": "Corn",
+        "Spinach": "Truck Crops"
+      };
+      return aliases[name] || name;
+    }
+
+    function getMoistureMessage(cropName, value) {
+      const match = cropMoistureData.find(c => c.cropname === cropName);
+      if (!match) return "";
+      const min = parseFloat(match.low);
+      const max = parseFloat(match.high);
+      if (value < min) return "⚠️ Too Dry";
+      if (value > max) return "⚠️ Too Wet";
+      return "✅ Optimal";
+    }
+
+    document.getElementById("optimizer-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      getWateringPlan();
+    });
+
     document.getElementById("knowRoot").addEventListener("change", e => {
       const showRoot = e.target.value === "yes";
       document.getElementById("rootSection").style.display = showRoot ? "block" : "none";
@@ -220,12 +176,13 @@
         if (!res.ok) throw new Error("Failed to fetch from backend");
         const data = await res.json();
 
-        document.getElementById("schedule").innerHTML = '';
-        const summaryHTML = `<div class="summary-box">${data.summary}</div>`;
-        const forecastHTML = `
-          <h2>📊 Predicted AW: ${data.predicted_aw} ac-ft</h2>
-          <div class="calendar-grid">
-            ${data.schedule.map(d => `
+        document.getElementById("schedule").innerHTML = `
+  <div class="calendar-grid">
+    ${data.schedule.map(d => {
+      const cropName = document.getElementById("crop").value;
+      const normalizedCrop = normalizeCropName(cropName);
+      const status = getMoistureMessage(normalizedCrop, d.soil_moisture);
+              return `
               <div class="calendar-day">
                 <h4>${d.day.split(" ")[0]}</h4>
                 <p>${d.date}</p>
@@ -233,16 +190,16 @@
                 <p>☔ Rain: <strong>${d.rain} mm</strong></p>
                 <div class="soil-box">
                   <p><strong>Soil Moisture <span title='Amount of water held in soil, shown in cubic meters per cubic meter'>ℹ️</span></strong></p>
-                  <p>🌱 <strong>${d.soil_moisture} m³/m³</strong></p>
+                  <p>🌱 <strong>${d.soil_moisture} m³/m³</strong> — ${status}</p>
                 </div>
                 <p>🌤️ ET₀: <strong>${d.et0} mm</strong></p>
                 <p>🌿 ETc: <strong>${d.etc} mm</strong></p>
                 <p>💧 Water: <strong>${d.liters} L</strong></p>
-              </div>
-            `).join("")}
-          </div>`;
-
-        document.getElementById("schedule").innerHTML = forecastHTML + summaryHTML;
+              </div>`;
+            }).join("")}
+          </div>
+          <div class="summary-box">${data.summary}</div>
+        `;
       } catch (err) {
         document.getElementById("schedule").innerHTML = `<p style="color:red;">Error: ${err.message}</p>`;
       }
