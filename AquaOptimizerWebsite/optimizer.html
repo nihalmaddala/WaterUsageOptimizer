@@ -159,7 +159,7 @@
   <input id="applied" type="number" />
 </div>
 
-<button type="button" onclick="getWateringPlan()">Get 5-Day Schedule</button>
+<button type="submit">Get 5-Day Schedule</button>
         </form>
 
         <div id="schedule"></div>
@@ -168,6 +168,10 @@
   </div>
 
   <script>
+  document.getElementById("optimizer-form").addEventListener("submit", function(e) {
+    e.preventDefault();
+    getWateringPlan();
+  });
     document.getElementById("knowRoot").addEventListener("change", e => {
       const showRoot = e.target.value === "yes";
       document.getElementById("rootSection").style.display = showRoot ? "block" : "none";
@@ -216,7 +220,9 @@
         if (!res.ok) throw new Error("Failed to fetch from backend");
         const data = await res.json();
 
-        document.getElementById("schedule").innerHTML = `
+        document.getElementById("schedule").innerHTML = '';
+        const summaryHTML = `<div class="summary-box">${data.summary}</div>`;
+        const forecastHTML = `
           <h2>📊 Predicted AW: ${data.predicted_aw} ac-ft</h2>
           <div class="calendar-grid">
             ${data.schedule.map(d => `
@@ -234,12 +240,9 @@
                 <p>💧 Water: <strong>${d.liters} L</strong></p>
               </div>
             `).join("")}
-          </div>
+          </div>`;
 
-          <div class="summary-box">
-            ${data.summary}
-          </div>
-        `;
+        document.getElementById("schedule").innerHTML = forecastHTML + summaryHTML;
       } catch (err) {
         document.getElementById("schedule").innerHTML = `<p style="color:red;">Error: ${err.message}</p>`;
       }

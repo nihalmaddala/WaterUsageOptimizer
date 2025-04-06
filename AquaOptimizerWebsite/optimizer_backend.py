@@ -75,6 +75,11 @@ def get_forecast(lat, lon):
 @app.route("/get_plan", methods=["POST"])
 def get_plan():
     data = request.get_json()
+    applied = float(data.get("applied", 0))
+    root_depth = float(data.get("root_depth", 30))
+    soil = float(data.get("soil_moisture", 0.1))
+    rain = float(data.get("rain", 0))
+    data = request.get_json()
     zip_code = data.get("zip")
     crop = data.get("crop", "default").lower()
     area = float(data.get("area", 1))  # in m²
@@ -114,8 +119,8 @@ def get_plan():
         et0 = max(et0, 1.0 if crop == "almond" else 0.5)  # Minimum ET₀
 
         etc = round(et0 * kc, 2)
-        net_et = max(0, etc - rain - (soil * 2))
-        liters = round(net_et * area, 2)
+        net_et = max(0, (etc - rain - (soil * 2)) * (1 + (root_depth / 100)))
+        liters = round(max(0, net_et * area - applied), 2)
         total_liters_used += liters
 
         result.append({
