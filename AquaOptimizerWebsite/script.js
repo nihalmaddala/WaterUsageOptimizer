@@ -124,4 +124,9 @@ const fahrenheit = Math.round((celsius * 9) / 5 + 32);
   document.querySelector('.recommendation').classList.add("show");
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("location").value = "95340";
+  getWeather();
+});
+
 
