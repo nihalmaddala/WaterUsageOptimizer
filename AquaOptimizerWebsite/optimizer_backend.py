@@ -112,13 +112,17 @@ def get_plan():
         tmin = float(forecast["tmin"][i])
         tmean = float(forecast["tmean"][i])
 
-        
+
         if gauge == "yes" and i == 0:
             rain = float(manual_rain) 
         else:
              rain = float(forecast["rain"][i]) 
    
-        soil = float(manual_moisture if know_moisture == "yes" else forecast["soils"][i])
+        if know_moisture == "yes" and i == 0:
+            soil = float(manual_moisture)  
+        else:
+            soil = float(forecast["soils"][i])
+
 
         temp_diff = max(5, tmax - tmin)  # Minimum realistic temp swing
         et0 = 0.0023 * (tmean + 17.8) * (temp_diff ** 0.5) * 0.408
