@@ -149,3 +149,31 @@ button:hover {
   margin-top: 2rem;
   color: #000;
 }
+
+.how-it-works-list {
+  margin-top: 1.5rem;
+  padding-left: 1.2rem;
+  list-style: none;
+}
+
+.how-it-works-list li {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+  position: relative;
+  padding-left: 1.4rem;
+}
+
+.how-it-works-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #1fc2a0;
+  font-weight: bold;
+}
+
+#how-it-works {
+  background-color: #e1f5fe; 
+  color: #222;
+}
+
