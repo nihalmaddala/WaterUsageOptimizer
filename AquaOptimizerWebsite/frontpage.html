@@ -4,11 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Miraqua | Smart Irrigation</title>
+
+ 
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="frontpage.css" />
+
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Segoe UI', sans-serif; scroll-behavior: smooth; }
 
-    /* NAVBAR */
+    body {
+      font-family: 'Montserrat', sans-serif;
+      scroll-behavior: smooth;
+    }
+
+    /* ✅ NAVBAR */
     header {
       position: fixed;
       top: 0;
@@ -23,10 +32,23 @@
     }
 
     .logo {
-  font-size: 1.4rem;
-  font-weight: bold;
-  margin-left: -1rem;
-}
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-left: -1rem;
+    }
+
+    .logo a {
+      text-decoration: none;
+      color: white;
+      transition: color 0.3s ease;
+    }
+
+    .logo a:hover {
+      color: #1fc2a0;
+    }
 
     nav ul {
       list-style: none;
@@ -47,7 +69,7 @@
       border-bottom: 2px solid #1fc2a0;
     }
 
-    /* HERO SECTION */
+    /* ✅ HERO SECTION */
     #hero {
       background: url('mpback.jpg') center/cover no-repeat;
       height: 100vh;
@@ -130,14 +152,14 @@
 
   <!-- ✅ NAVIGATION -->
   <header>
-  <div class="logo"><a href="frontpage.html#hero" style="text-decoration: none; color: white;">Miraqua</a></div>
-  <nav>
-    <ul>
-      <li><a href="frontpage.html#about">ABOUT</a></li>
-      <li><a href="optimizer.html">OPTIMIZER</a></li>
-    </ul>
-  </nav>
-</header>
+    <div class="logo"><a href="frontpage.html#hero">Miraqua</a></div>
+    <nav>
+      <ul>
+        <li><a href="frontpage.html#about">ABOUT</a></li>
+        <li><a href="optimizer.html">OPTIMIZER</a></li>
+      </ul>
+    </nav>
+  </header>
 
   <!-- ✅ HERO SECTION -->
   <section id="hero">
@@ -150,19 +172,19 @@
 
   <!-- ✅ ABOUT SECTION -->
   <section id="about">
-  <h2>About Miraqua</h2>
-  <p>
-    Miraqua is a smart irrigation assistant built for modern farmers. Using real-time weather, crop-specific science, and machine learning, Miraqua delivers precision watering plans that save water, reduce costs, and promote healthy crop growth — automatically.
-  </p>
-</section>
+    <h2>About Miraqua</h2>
+    <p>
+      Miraqua is a smart irrigation assistant built for modern farmers. Using real-time weather, crop-specific science, and machine learning, Miraqua delivers precision watering plans that save water, reduce costs, and promote healthy crop growth — automatically.
+    </p>
+  </section>
 
   <!-- ✅ OPTIMIZER SECTION -->
   <section id="optimizer">
-  <h2>Smart Water Optimizer</h2>
-  <p>
-    Our AI-powered 5-day planner generates a custom irrigation schedule tailored to your land size, crop type, and local weather. Just enter your ZIP code, crop, and area — Miraqua calculates the most efficient watering strategy for your field.
-  </p>
-</section>
+    <h2>Smart Water Optimizer</h2>
+    <p>
+      Our AI-powered 5-day planner generates a custom irrigation schedule tailored to your land size, crop type, and local weather. Just enter your ZIP code, crop, and area — Miraqua calculates the most efficient watering strategy for your field.
+    </p>
+  </section>
 
 </body>
 </html>

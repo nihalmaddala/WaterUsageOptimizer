@@ -21,8 +21,21 @@ body {
   }
   
   .logo {
-    font-size: 1.4rem;
-    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 400; 
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-left: -1rem;
+  }
+  .logo a {
+    text-decoration: none;
+    color: white;
+    transition: color 0.3s ease;
+  }
+  
+  .logo a:hover {
+    color: #1fc2a0;
   }
   
   nav ul {
