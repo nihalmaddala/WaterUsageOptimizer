@@ -3,14 +3,11 @@ import requests
 import openmeteo_requests
 import requests_cache
 from retry_requests import retry
-import os
-from dotenv import load_dotenv
-import warnings
 from sklearn.linear_model import LinearRegression
+import warnings
+from datetime import datetime
 
 warnings.filterwarnings("ignore", category=UserWarning)
-load_dotenv()
-API_KEY = os.getenv("OPENWEATHER_API_KEY")
 
 # Setup Open-Meteo client
 cache_session = requests_cache.CachedSession('.cache', expire_after=3600)
@@ -41,41 +38,37 @@ def train_model():
     model = LinearRegression().fit(X, y)
     return model
 
-def get_forecast_with_soil(city):
+def get_openmeteo_forecast(city):
     lat, lon = get_lat_lon(city)
     if not lat or not lon:
         print(f"[SKIP] Could not geocode {city}")
         return None
 
-    # === OpenWeather for rainfall ===
-    ow_url = f"https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude=minutely,hourly,current,alerts&appid={API_KEY}&units=metric"
-    ow_data = requests.get(ow_url).json()
-    rain_by_day = [day.get("rain", 0) for day in ow_data.get("daily", [])[:7]]
-
-    # === Open-Meteo for soil and temperature ===
-    om_url = "https://api.open-meteo.com/v1/forecast"
+    url = "https://api.open-meteo.com/v1/forecast"
     params = {
         "latitude": lat,
         "longitude": lon,
-        "daily": ["temperature_2m_max", "temperature_2m_min"],
+        "daily": ["temperature_2m_max", "temperature_2m_min", "precipitation_sum"],
         "hourly": ["soil_moisture_0_to_1cm"],
         "temperature_unit": "fahrenheit",
         "timezone": "auto"
     }
 
-    responses = openmeteo.weather_api(om_url, params=params)
+    responses = openmeteo.weather_api(url, params=params)
     response = responses[0]
 
-    # Daily temp
+    # Daily values
     daily = response.Daily()
-    temps_max = daily.Variables(0).ValuesAsNumpy()
-    temps_min = daily.Variables(1).ValuesAsNumpy()
     dates = pd.date_range(
         start=pd.to_datetime(daily.Time(), unit="s", utc=True),
         end=pd.to_datetime(daily.TimeEnd(), unit="s", utc=True),
         freq=pd.Timedelta(seconds=daily.Interval()), inclusive="left"
     ).date
-    avg_temps = [(temps_max[i] + temps_min[i]) / 2 for i in range(len(temps_max))]
+
+    tmax = daily.Variables(0).ValuesAsNumpy()
+    tmin = daily.Variables(1).ValuesAsNumpy()
+    rain = daily.Variables(2).ValuesAsNumpy()
+    avg_temp = [(tmax[i] + tmin[i]) / 2 for i in range(len(tmax))]
 
     # Hourly soil moisture
     hourly = response.Hourly()
@@ -84,9 +77,9 @@ def get_forecast_with_soil(city):
 
     return {
         "dates": dates,
-        "temps": avg_temps,
-        "soils": soil_avg_per_day,
-        "rain": rain_by_day
+        "temps": avg_temp,
+        "rain": rain,
+        "soils": soil_avg_per_day
     }
 
 def predict_daily_aw(csv_file):
@@ -98,13 +91,13 @@ def predict_daily_aw(csv_file):
         crop = row["Crop"]
         city = row["City"]
 
-        forecast = get_forecast_with_soil(city)
+        forecast = get_openmeteo_forecast(city)
         if not forecast:
             continue
 
         for i in range(min(7, len(forecast["dates"]))):
             X_input = pd.DataFrame([{
-                "total_rain": forecast["rain"][i] if i < len(forecast["rain"]) else 0,
+                "total_rain": forecast["rain"][i],
                 "avg_temp": forecast["temps"][i],
                 "soil_moisture": forecast["soils"][i]
             }])
@@ -115,8 +108,8 @@ def predict_daily_aw(csv_file):
                 "City": city,
                 "Date": forecast["dates"][i],
                 "Predicted_AW_Day": round(pred_aw, 3),
-                "Rainfall_mm": forecast["rain"][i] if i < len(forecast["rain"]) else 0,
-                "Temperature_F": forecast["temps"][i],
+                "Rainfall_mm": round(forecast["rain"][i], 3),
+                "Temperature_F": round(forecast["temps"][i], 1),
                 "Soil_Moisture": round(forecast["soils"][i], 3)
             })
 
