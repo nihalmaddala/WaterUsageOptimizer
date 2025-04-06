@@ -1,5 +1,5 @@
 body {
-    font-family: 'Segoe UI', sans-serif;
+  font-family: 'Montserrat', sans-serif;
     background: #f9fdf9;
     scroll-behavior: smooth;
     margin: 0;
@@ -71,6 +71,10 @@ h1 {
   margin-bottom: 1.5rem;
   text-align: center;
   color: #004d00;
+}
+h1, h2, h3, h4 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
 }
 
 /* === FORM ELEMENTS === */
